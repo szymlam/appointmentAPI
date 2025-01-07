@@ -6,6 +6,7 @@ namespace AppointmentAPI.Models;
 
 public class Client
 {
+    
     public string ClientId { get; set; }
     [Required]
     [MaxLength(30)]
@@ -14,19 +15,29 @@ public class Client
     [MaxLength(30)]
     public string Surname { get; set; }
     [Phone]
+    [MaxLength(15)]
     public string? PhoneNumber { get; set; }
     [EmailAddress]
+    [MaxLength(100)]
     public string? Email { get; set; }
     
     [JsonIgnore]
-    public ICollection<Reservation> Reservations { get; } = [];
+    public ICollection<Reservation> Reservations { get; set; } = [];
+    
+}
 
-    public Client(string name, string surname, string phoneNumber, string email)
-    {
-        Name = name;
-        Surname = surname;
-        PhoneNumber = phoneNumber;
-        Email = email;
-        ClientId = name[..3] + surname[..3] + RandomNumberGenerator.GetHexString(4);
-    }
+public record ClientDto
+{
+    [Required]
+    [MaxLength(30)]
+    public string Name { get; set; }
+    [Required]
+    [MaxLength(30)]
+    public string Surname { get; set; }
+    [Phone]
+    [MaxLength(15)]
+    public string? PhoneNumber { get; set; }
+    [EmailAddress]
+    [MaxLength(100)]
+    public string? Email { get; set; }
 }
