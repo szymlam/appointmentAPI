@@ -8,22 +8,16 @@ namespace AppointmentAPI.Controllers;
 [ApiController]
 [Route("[controller]")]
 
-public class ClientController : ControllerBase
+public class ClientController(ClientService service) : ControllerBase
 {
-    private readonly ClientService _serviceInstance;
-    public ClientController(ClientService service)
-    {
-        _serviceInstance = service;
-    }
-
     [HttpGet]
     public ActionResult<List<Client>> GetAll() =>
-        _serviceInstance.GetAll().ToList();
+        service.GetAll().ToList();
 
     [HttpGet("{clientId}")]
     public ActionResult<Client> Get(string clientId)
     {
-        var client = _serviceInstance.GetById(clientId);
+        var client = service.GetById(clientId);
         
         if (client is null)
         {
@@ -41,11 +35,10 @@ public class ClientController : ControllerBase
             Name = clientDto.Name,
             Surname = clientDto.Surname,
             Email = clientDto.Email,
-            PhoneNumber = clientDto.PhoneNumber,
-            ClientId = clientDto.Name[..Math.Min(clientDto.Name.Length, 3)] + clientDto.Surname[..Math.Min(clientDto.Surname.Length, 3)] + RandomNumberGenerator.GetHexString(4) 
+            PhoneNumber = clientDto.PhoneNumber
         };
         
-        _serviceInstance.Create(client);
+        service.Create(client);
 
         return CreatedAtAction(nameof(Get), new {clientId = client.ClientId}, client);
     }
@@ -55,11 +48,11 @@ public class ClientController : ControllerBase
     [HttpDelete("{clientId}")]
     public IActionResult Delete(string clientId)
     {
-        var client = _serviceInstance.GetById(clientId);
+        var client = service.GetById(clientId);
         if (client is null)
             return NotFound();
         
-        _serviceInstance.DeleteById(clientId);
+        service.DeleteById(clientId);
 
         return NoContent();
     }

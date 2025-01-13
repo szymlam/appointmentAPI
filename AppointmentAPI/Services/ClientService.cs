@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using AppointmentAPI.Data;
 using AppointmentAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,32 +24,15 @@ public class ClientService(ReservationContext context)
 
     public Client Create(Client client)
     {
+        client.ClientId = client.Name[..Math.Min(client.Name.Length, 3)] +
+                          client.Surname[..Math.Min(client.Surname.Length, 3)] + RandomNumberGenerator.GetHexString(4);
         
         context.Clients.Add(client);
         context.SaveChanges();
 
         return client;
     }
-
-    public void AddReservation(int reservationId, string clientId)
-    {
-        var clientToUpdate = GetById(clientId);
-        var reservationToAdd = context.Reservations.Find(reservationId);
-
-        if (clientToUpdate is null || reservationToAdd is null)
-        {
-            throw new InvalidOperationException("Client or reservation doesn't exist");
-        }
-
-        if (clientToUpdate.Reservations.Count == 0)
-        {
-            clientToUpdate.Reservations = new List<Reservation>();
-        }
-        
-        clientToUpdate.Reservations.Add(reservationToAdd);
-
-        context.SaveChanges();
-    }
+    
 
     public void DeleteById(string id)
     {
