@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using AppointmentAPI.Data;
+using AppointmentAPI.DTOs;
 using AppointmentAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,22 @@ public class ClientService(ReservationContext context)
             .ToList();
     }
     
-    public Client? GetById(string id)
+    public ClientDto? GetById(string id)
     {
-        return context.Clients
+        var client = context.Clients
             .Include(c => c.Reservations)
             .AsNoTracking()
             .SingleOrDefault(c => c.ClientId == id);
+        if (client is null)
+            return null;
+
+        return new ClientDto()
+        {
+            Email = client.Email,
+            Name = client.Name,
+            Surname = client.Surname,
+            PhoneNumber = client.PhoneNumber
+        };
     }
 
     public Client Create(Client client)

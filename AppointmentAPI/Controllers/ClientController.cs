@@ -1,3 +1,4 @@
+using AppointmentAPI.DTOs;
 using AppointmentAPI.Models;
 using AppointmentAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ public class ClientController(ClientService service) : ControllerBase
         service.GetAll().ToList();
 
     [HttpGet("{clientId}")]
-    public ActionResult<Client> Get(string clientId)
+    public ActionResult<ClientDto> Get(string clientId)
     {
         var client = service.GetById(clientId);
         
@@ -29,11 +30,11 @@ public class ClientController(ClientService service) : ControllerBase
     [HttpPost]
     public IActionResult CreateUser(ClientDto clientDto)
     {
-        Client client = new Client
+        var client = new Client
         {
             Name = clientDto.Name,
             Surname = clientDto.Surname,
-            Email = clientDto.Email,
+            Email = clientDto.Email ?? string.Empty,
             PhoneNumber = clientDto.PhoneNumber
         };
         

@@ -7,7 +7,8 @@ public class Visit
 {
     [Key]   
     public int VisitId { get; set; }
-    public string Type { get; set; }
+    [MaxLength(30)]
+    public string Type { get; set; } = string.Empty;
     public float Cost { get; set; }
     public float TimeLength { get; set; }
 

@@ -1,3 +1,4 @@
+using System.Text;
 using AppointmentAPI;
 using AppointmentAPI.Data;
 using AppointmentAPI.Models;
@@ -30,8 +31,8 @@ app.CreateDbIfNotExists();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.MapControllers();
+
+app.UseAuthorization();
 
 app.Run();

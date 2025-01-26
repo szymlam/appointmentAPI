@@ -5,10 +5,12 @@ namespace AppointmentAPI.Models;
 
 public class Reservation
 {
-    public string ReservationId { get; set; }
+    [MaxLength(50)]
+    public string ReservationId { get; set; } = string.Empty;
     [Required]
     [ForeignKey("Client")]
-    public string ClientId { get; set; }
+    [MaxLength(50)]
+    public string ClientId { get; set; } = string.Empty;
     [Required]
     [ForeignKey("Visit")]
     public int VisitId { get; set; }

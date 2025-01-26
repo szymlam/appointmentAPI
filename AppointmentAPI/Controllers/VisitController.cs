@@ -1,3 +1,4 @@
+using AppointmentAPI.DTOs;
 using AppointmentAPI.Models;
 using AppointmentAPI.Services;
 using Microsoft.AspNetCore.Mvc;
