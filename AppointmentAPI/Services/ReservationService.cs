@@ -54,4 +54,10 @@ public class ReservationService(ReservationContext context)
         context.Reservations.Remove(reservationToRemove);
         context.SaveChanges();
     }
+    
+    public void Update(Reservation reservation)
+    {
+        context.Entry(reservation).State = EntityState.Modified;
+        context.SaveChanges();
+    }
 }

@@ -56,4 +56,16 @@ public class ClientController(ClientService service) : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPut]
+    public IActionResult Update(Client client)
+    {
+        var clientToUpdate = service.GetById(client.ClientId);
+        if (clientToUpdate is null)
+            return BadRequest();
+        
+        service.Update(client);
+
+        return NoContent();
+    }
 } 

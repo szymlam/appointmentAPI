@@ -11,16 +11,16 @@ namespace AppointmentAPI.Controllers;
 [ApiController]
 [Route("[controller]")]
 
-public class ReservationController(ReservationService serviceInstance) : ControllerBase
+public class ReservationController(ReservationService service) : ControllerBase
 {
     [HttpGet]
     public ActionResult<List<Reservation>> GetAll() => 
-        serviceInstance.GetAll().ToList();
+        service.GetAll().ToList();
 
     [HttpGet("{reservationId}")]
     public ActionResult<Reservation> Get(string reservationId)
     {
-        var reservation = serviceInstance.GetById(reservationId);
+        var reservation = service.GetById(reservationId);
 
         if (reservation is null)
         {
@@ -40,7 +40,7 @@ public class ReservationController(ReservationService serviceInstance) : Control
             Date = reservationDto.Date
         };
         
-        serviceInstance.Create(reservation);
+        service.Create(reservation);
         
         return CreatedAtAction(nameof(Get), new { reservationId = reservation.ReservationId }, reservation);
     }
@@ -48,11 +48,23 @@ public class ReservationController(ReservationService serviceInstance) : Control
     [HttpDelete("{reservationId}")]
     public IActionResult Delete(string reservationId)
     {
-        var reservation = serviceInstance.GetById(reservationId);
+        var reservation = service.GetById(reservationId);
         if (reservation is null)
             return NotFound();
         
-        serviceInstance.DeleteById(reservationId);
+        service.DeleteById(reservationId);
+
+        return NoContent();
+    }
+    
+    [HttpPut]
+    public IActionResult Update(Reservation reservation)
+    {
+        var clientToUpdate = service.GetById(reservation.ReservationId);
+        if (clientToUpdate is null)
+            return BadRequest();
+        
+        service.Update(reservation);
 
         return NoContent();
     }

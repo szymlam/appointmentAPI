@@ -54,6 +54,12 @@ public class ClientService(ReservationContext context)
         context.Clients.Remove(clientToRemove);
         context.SaveChanges();
     }
+
+    public void Update(Client client)
+    {
+        context.Entry(client).State = EntityState.Modified;
+        context.SaveChanges();
+    }
     
     
 }

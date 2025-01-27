@@ -39,4 +39,10 @@ public class VisitService(ReservationContext context)
         context.Visits.Remove(visit);
         context.SaveChanges();
     }
+    
+    public void Update(Visit visit)
+    {
+        context.Entry(visit).State = EntityState.Modified;
+        context.SaveChanges();
+    }
 }
