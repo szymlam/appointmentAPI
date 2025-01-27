@@ -1,13 +1,15 @@
 using AppointmentAPI.DTOs;
 using AppointmentAPI.Models;
 using AppointmentAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentAPI.Controllers;
 
-
+[Authorize]
 [Route("[controller]")]
 [ApiController]
+
 public class VisitController(VisitService serviceInstance) : ControllerBase
 {
     [HttpGet]
