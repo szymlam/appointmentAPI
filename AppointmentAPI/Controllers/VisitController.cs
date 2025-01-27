@@ -12,6 +12,7 @@ namespace AppointmentAPI.Controllers;
 
 public class VisitController(VisitService service) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpGet]
     public ActionResult<List<Visit>> GetAll() =>
         service.GetAll().ToList();

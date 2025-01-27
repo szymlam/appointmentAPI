@@ -1,10 +1,13 @@
 using AppointmentAPI.DTOs;
 using AppointmentAPI.Models;
 using AppointmentAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentAPI.Controllers;
 
+
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 
@@ -44,7 +47,7 @@ public class ClientController(ClientService service) : ControllerBase
     }
     
     
-
+    [Authorize(Roles="Admin")]
     [HttpDelete("{clientId}")]
     public IActionResult Delete(string clientId)
     {
